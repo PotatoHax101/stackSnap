@@ -33,20 +33,11 @@
 
         Dim deck(51) As card
 
+        Dim clubs(13), diamonds(13), hearts(13), spades(13) As card
+
         For i = 1 To 4
 
-            For v = 1 To 13
-
-                deck((i * v) - 1) = New card
-                deck((i * v) - 1).FaceUp = False
-                deck((i * v) - 1).suit = i - 1
-                deck((i * v) - 1).cardNum = v
-
-                'Console.WriteLine(i & " x " & v & " = " & i * v)
-
-                Console.WriteLine("Card " & deck((i * v) - 1).cardNum & " in suit " & deck((i * v) - 1).suit.ToString)
-
-            Next
+            'Allocate()
 
         Next
 
@@ -54,26 +45,43 @@
 
     End Function
 
+    Sub Allocate(ByRef array() As card, ByVal i As Integer)
+
+        For q = 1 To 13
+
+            array((q) - 1) = New card
+            array((q) - 1).FaceUp = False
+            array((q) - 1).suit = i - 1
+            array((q) - 1).cardNum = q
+
+        Next
+
+    End Sub
+
     Function shuffle(ByVal deck() As card)
 
         Dim shuffledDeck() As card = deck
 
         Dim rand = New Random()
 
+        Dim n As Integer
+        Dim temp
+
         Console.WriteLine("")
 
-        For i = 0 To deck.Length - 1
+        For i = 1 To 4
 
-            Dim n = rand.Next(i + 1)
-            Console.WriteLine("n is: " & n)
+            For v = 1 To 13
 
-            Dim temp = deck(i)
-            Console.WriteLine("Temp is: " & temp.cardNum & " in suit " & temp.suit.ToString)
-            deck(i) = shuffledDeck(n)
-            Console.WriteLine("Deck(n) is: " & deck(n).cardNum & " in suit " & deck(n).suit.ToString)
-            shuffledDeck(n) = temp
+                n = rand.Next((v * i) - 1)
 
-            Console.WriteLine("Card " & deck((i)).cardNum & " in suit " & deck((i)).suit.ToString)
+                temp = shuffledDeck((i * v) - 1)
+                shuffledDeck((i * v) - 1) = shuffledDeck(n)
+                shuffledDeck(n) = temp
+
+                Console.WriteLine("Card " & shuffledDeck((i * v) - 1).cardNum & " in suit " & shuffledDeck((i * v) - 1).suit.ToString)
+
+            Next
 
         Next
 
