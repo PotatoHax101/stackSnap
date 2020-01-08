@@ -1,26 +1,54 @@
 ﻿Module Module1
 
+    Enum suitType
+
+        clubs
+        diamonds
+        hearts
+        spades
+
+    End Enum
+
     Structure card
 
-        Private FaceUp As Boolean
-
+        Dim FaceUp As Boolean
+        Dim suit As suitType
+        Dim cardNum As Integer
 
     End Structure
 
     Sub Main()
 
-        Dim deck(52) As Array
+        Dim deck() As card = deckCreate()
 
         Dim placedStk As Stack = New Stack()
 
-        Console.WriteLine("oiufahpianoigajpogj")
         Console.ReadLine()
 
     End Sub
 
     Function deckCreate()
 
-        Dim deck(52) As Array
+        Dim deck(52) As card
+
+        For i = 1 To 4
+
+            For v = 1 To 13
+
+                deck(i * v) = New card
+                deck(i * v).FaceUp = False
+                deck(i * v).suit = i - 1
+                deck(i * v).cardNum = v
+
+                'Console.WriteLine(i & " x " & v & " = " & i * v)
+
+                Console.WriteLine("Card " & deck(i * v).cardNum & " in suit " & deck(i).suit.ToString)
+
+            Next
+
+        Next
+
+        Console.ReadLine()
 
         Return deck
 
@@ -55,4 +83,3 @@
     End Function
 
 End Module
-
