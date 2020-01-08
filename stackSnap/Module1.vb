@@ -23,13 +23,15 @@
 
         Dim placedStk As Stack = New Stack()
 
+        shuffle(deck)
+
         Console.ReadLine()
 
     End Sub
 
     Function deckCreate()
 
-        Dim deck(52) As card
+        Dim deck(51) As card
 
         For i = 1 To 4
 
@@ -52,11 +54,32 @@
 
     End Function
 
-    Sub shuffle()
+    Function shuffle(ByVal deck() As card)
 
+        Dim shuffledDeck() As card = deck
 
+        Dim rand = New Random()
 
-    End Sub
+        Console.WriteLine("")
+
+        For i = 0 To deck.Length - 1
+
+            Dim n = rand.Next(i + 1)
+            Console.WriteLine("n is: " & n)
+
+            Dim temp = deck(i)
+            Console.WriteLine("Temp is: " & temp.cardNum & " in suit " & temp.suit.ToString)
+            deck(i) = shuffledDeck(n)
+            Console.WriteLine("Deck(n) is: " & deck(n).cardNum & " in suit " & deck(n).suit.ToString)
+            shuffledDeck(n) = temp
+
+            Console.WriteLine("Card " & deck((i)).cardNum & " in suit " & deck((i)).suit.ToString)
+
+        Next
+
+        Return shuffledDeck
+
+    End Function
 
 
     Sub handOut()
