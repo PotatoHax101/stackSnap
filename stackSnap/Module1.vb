@@ -35,20 +35,18 @@
 
             For v = 1 To 13
 
-                deck(i * v) = New card
-                deck(i * v).FaceUp = False
-                deck(i * v).suit = i - 1
-                deck(i * v).cardNum = v
+                deck((i * v) - 1) = New card
+                deck((i * v) - 1).FaceUp = False
+                deck((i * v) - 1).suit = i - 1
+                deck((i * v) - 1).cardNum = v
 
                 'Console.WriteLine(i & " x " & v & " = " & i * v)
 
-                Console.WriteLine("Card " & deck(i * v).cardNum & " in suit " & deck(i).suit.ToString)
+                Console.WriteLine("Card " & deck((i * v) - 1).cardNum & " in suit " & deck((i * v) - 1).suit.ToString)
 
             Next
 
         Next
-
-        Console.ReadLine()
 
         Return deck
 
