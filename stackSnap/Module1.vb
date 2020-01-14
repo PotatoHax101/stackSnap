@@ -1,99 +1,98 @@
 ﻿Module Module1
 
-    Enum suitType
-
-        clubs
-        diamonds
-        hearts
-        spades
-
-    End Enum
-
-    Structure card
-
-        Dim FaceUp As Boolean
-        Dim suit As suitType
-        Dim cardNum As Integer
-
-    End Structure
-
     Sub Main()
 
-        Dim deck() As card = deckCreate()
+        ' randomTest()
+        Dim cards() As Integer = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
 
-        Dim placedStk As Stack = New Stack()
-
-        shuffle(deck)
+        Dim shuffleDeck() As Integer = deckCreate(cards)
 
         Console.ReadLine()
 
     End Sub
 
-    Function deckCreate()
+    Sub randomTest()
 
-        Dim deck(51) As card
+        Dim r As Random = New Random
 
-        Dim clubs(13), diamonds(13), hearts(13), spades(13) As card
+        Dim rand
 
-        For i = 1 To 4
+        Dim randTable(51) As Integer
 
-            'Allocate()
+        For i = 0 To 51
+
+            rand = r.Next(i)
+
+            If rand = randTable(i) Then
+
+                rand = sortRandom(randTable(i), rand)
+
+            End If
+
 
         Next
 
-        Return deck
+        Array.Sort(randTable)
 
-    End Function
+        For i = 0 To 51
 
-    Sub Allocate(ByRef array() As card, ByVal i As Integer)
+            If randTable(i) = randTable(i + 1) Then
 
-        For q = 1 To 13
+                rand = sortRandom(randTable(i + 1), randTable(i))
 
-            array((q) - 1) = New card
-            array((q) - 1).FaceUp = False
-            array((q) - 1).suit = i - 1
-            array((q) - 1).cardNum = q
+            End If
+
+            Console.WriteLine(randTable(i))
 
         Next
 
     End Sub
 
-    Function shuffle(ByVal deck() As card)
+    Function sortRandom(ByVal arrayIndex As Integer, ByVal value As Integer)
 
-        Dim shuffledDeck() As card = deck
+        While value = arrayIndex
+
+            value += 1
+
+        End While
+
+        Return value
+
+    End Function
+
+    Function deckCreate(ByRef cards() As Integer)
+
+        Dim shuffle(cards.Length) As Integer
+
+        Dim count As Integer = 0
+        Dim r As Integer
 
         Dim rand = New Random()
 
-        Dim n As Integer
-        Dim temp
+        Do
 
-        Console.WriteLine("")
+            r = rand.Next(51)
 
-        For i = 1 To 4
+            While cards(r) <> -1
 
-            For v = 1 To 13
+                shuffle(r) = cards(r)
+                cards(r) = -1
+                count += 1
+                Console.WriteLine(shuffle(r))
 
-                n = rand.Next((v * i) - 1)
+            End While
 
-                temp = shuffledDeck((i * v) - 1)
-                shuffledDeck((i * v) - 1) = shuffledDeck(n)
-                shuffledDeck(n) = temp
+        Loop While count < shuffle.Length
 
-                Console.WriteLine("Card " & shuffledDeck((i * v) - 1).cardNum & " in suit " & shuffledDeck((i * v) - 1).suit.ToString)
-
-            Next
-
-        Next
-
-        Return shuffledDeck
+        Return shuffle
 
     End Function
 
 
-    Sub handOut()
+    Sub handOut(ByVal shuffleDeck() As Integer)
 
-        Dim playerDeck As Queue = New Queue()
-        Dim computerDeck As Queue = New Queue()
+        Dim player1Deck As Stack(Of Integer) = New Stack(Of Integer)
+        Dim player2Deck As Stack(Of Integer) = New Stack(Of Integer)
 
 
 
@@ -101,13 +100,13 @@
 
     Sub placeCards()
 
-
+        Dim cardDeposit As Stack(Of Integer) = New Stack(Of Integer)
 
     End Sub
 
     Function snap()
 
-
+        Dim Deposit As Stack(Of Integer) = New Stack(Of Integer)
 
     End Function
 
