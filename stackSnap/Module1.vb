@@ -5,6 +5,12 @@
         ' randomTest()
         Dim cards() As Integer = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
 
+        Dim key As Integer = Console.ReadKey().Key
+
+        Console.WriteLine(key)
+
+        Console.ReadLine()
+
         Dim shuffleDeck() As Integer = deckCreate(cards)
 
         handOut(shuffleDeck)
@@ -123,10 +129,12 @@
 
     End Sub
 
-    Sub PlacementAction(ByRef firstDeck As Stack(Of Integer), ByRef secondDeck As Stack(Of Integer), ByRef previousPlacement As Integer, ByRef cardDeposit As Stack(Of Integer))
+    Function PlacementAction(ByRef firstDeck As Stack(Of Integer), ByRef secondDeck As Stack(Of Integer), ByRef previousPlacement As Integer, ByRef cardDeposit As Stack(Of Integer))
 
         Dim chosenCard As Integer = firstDeck.Peek
         cardDeposit.Push(firstDeck.Pop)
+
+        Console.WriteLine("The card being placed is " & chosenCard & ", the card previously placed was " & previousPlacement)
 
         Dim CardCheckBool As Boolean = CardCheck(chosenCard, previousPlacement)
 
@@ -134,15 +142,15 @@
 
         If CardCheckBool = True Then
 
-            snapState(True, firstDeck, secondDeck)
+            snapState(True, firstDeck, secondDeck, cardDeposit)
 
         Else
 
-            snapState(False, firstDeck, secondDeck)
+            snapState(False, firstDeck, secondDeck, cardDeposit)
 
         End If
 
-    End Sub
+    End Function
 
     Function CardCheck(ByVal chosenCard As Integer, ByVal previousCard As Integer)
 
@@ -158,10 +166,59 @@
 
     End Function
 
-    Function snapState(ByVal bool As Boolean, ByRef player1Deck As Stack(Of Integer), ByRef player2Deck As Stack(Of Integer))
+    Function snapState(ByVal bool As Boolean, ByRef player1Deck As Stack(Of Integer), ByRef player2Deck As Stack(Of Integer), ByRef PlacedDeck As Stack(Of Integer))
 
         Dim Deposit As Stack(Of Integer) = New Stack(Of Integer)
 
+        Dim player1Snap As Integer = 80
+        Dim player2Snap As Integer = 83
+        Dim skipSnap As Integer = 13
+
+        Dim keyPress As Integer = Console.ReadKey().Key
+
+        If keyPress = player1Snap Then
+
+            If bool <> False Then
+
+                Console.WriteLine("Player1 Wins the Snap!")
+
+                'JackPot(PlacedDeck, )
+
+            End If
+
+        ElseIf keyPress = player2Snap Then
+
+            If bool <> False Then
+
+                Console.WriteLine("Player2 Wins the Snap!")
+
+            End If
+
+        Else
+
+
+
+        End If
+
     End Function
+
+    Sub JackPot(ByRef placedStack As Stack(Of Integer), ByRef Deposit As Stack(Of Integer), ByRef winnerPlayer As Stack(Of Integer))
+
+        push(placedStack, Deposit)
+        push(winnerPlayer, Deposit)
+
+        push(Deposit, winnerPlayer)
+
+    End Sub
+
+    Sub push(ByRef stackPop As Stack(Of Integer), ByRef stackPush As Stack(Of Integer))
+
+        For i = 1 To stackPop.Count
+
+            stackPush.Push(stackPop.Pop)
+
+        Next
+
+    End Sub
 
 End Module
