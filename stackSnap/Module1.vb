@@ -1,17 +1,15 @@
 ﻿Module Module1
 
     Sub Main()
-
+        Console.WriteLine("Welcome to stackSnap!")
         ' randomTest()
         Dim cards() As Integer = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
 
-        Dim key As Integer = Console.ReadKey().Key
+        Dim shuffleDeck(51) As Integer
 
-        Console.WriteLine(key)
+        shuffleDeck = deckCreate(cards)
 
-        Console.ReadLine()
-
-        Dim shuffleDeck() As Integer = deckCreate(cards)
+        Console.WriteLine("We made it out alive!")
 
         handOut(shuffleDeck)
 
@@ -68,29 +66,29 @@
 
     End Function
 
-    Function deckCreate(ByRef cards() As Integer)
+    Function deckCreate(ByVal cards() As Integer)
 
-        Dim shuffle(cards.Length) As Integer
+        Console.WriteLine("Creating deck")
 
-        Dim count As Integer = 0
+        Dim shuffle(cards.Length - 1) As Integer
+
+        ' Dim count As Integer = 0
+        Dim q As Random = New Random
         Dim r As Integer
+        Dim count As Integer = 0
 
-        Dim rand = New Random()
 
-        Do
+        While count < 52
+            r = q.Next(0, 52)
 
-            r = rand.Next(51)
+            If cards(r) <> 15 Then
+                shuffle(count) = cards(r)
+                cards(r) = 15
+                count = count + 1
+            End If
+        End While
 
-            While cards(r) <> -1
-
-                shuffle(r) = cards(r)
-                cards(r) = -1
-                count += 1
-                Console.WriteLine(shuffle(r))
-
-            End While
-
-        Loop While count < shuffle.Length
+        Console.WriteLine("Deck successfully created and loaded")
 
         Return shuffle
 
@@ -99,15 +97,22 @@
 
     Sub handOut(ByVal shuffleDeck() As Integer)
 
+        Console.WriteLine("Handing out cards")
+
         Dim player1Deck As Stack(Of Integer) = New Stack(Of Integer)
+
         Dim player2Deck As Stack(Of Integer) = New Stack(Of Integer)
 
         For i = 0 To 50 Step 2
 
             player1Deck.Push(shuffleDeck(i))
+            Console.WriteLine(player1Deck.Peek)
             player2Deck.Push(shuffleDeck(i + 1))
+            Console.WriteLine(player2Deck.Peek)
 
         Next
+
+        Console.WriteLine("Cards handed out")
 
         placeCards(player1Deck, player2Deck)
 
@@ -117,21 +122,29 @@
 
         Dim cardDeposit As Stack(Of Integer) = New Stack(Of Integer)
 
+        Console.WriteLine("Going into the game")
+
+        Console.WriteLine("Player 1 has placed a card")
         cardDeposit.Push(player1Deck.Pop)
         Dim previousPlacement As Integer = cardDeposit.Peek
+        Console.WriteLine("The card is: " & previousPlacement)
+
 
         Do
-
+            Console.WriteLine("Player 2 has placed a card!")
             PlacementAction(player2Deck, player1Deck, previousPlacement, cardDeposit)
+
+            Console.WriteLine("Player 1 has placed a card!")
             PlacementAction(player1Deck, player2Deck, previousPlacement, cardDeposit)
 
-        Loop While (player1Deck.Count > 0 And player2Deck.Count > 0) Or (player1Deck.Count > 0 And player2Deck.Count <= 0) Or (player1Deck.Count <= 0 And player2Deck.Count > 0)
+        Loop While (player1Deck.Count >= 0 And player2Deck.Count >= 0) Or (player1Deck.Count >= 0 And player2Deck.Count <= 0) Or (player1Deck.Count <= 0 And player2Deck.Count >= 0)
 
     End Sub
 
     Function PlacementAction(ByRef firstDeck As Stack(Of Integer), ByRef secondDeck As Stack(Of Integer), ByRef previousPlacement As Integer, ByRef cardDeposit As Stack(Of Integer))
 
         Dim chosenCard As Integer = firstDeck.Peek
+
         cardDeposit.Push(firstDeck.Pop)
 
         Console.WriteLine("The card being placed is " & chosenCard & ", the card previously placed was " & previousPlacement)
@@ -174,7 +187,11 @@
         Dim player2Snap As Integer = 83
         Dim skipSnap As Integer = 13
 
+        Console.WriteLine("To snap, player 1 press 's', player 2 press 'p', or press enter to skip")
+
         Dim keyPress As Integer = Console.ReadKey().Key
+
+        Console.WriteLine(keyPress)
 
         If keyPress = player1Snap Then
 
@@ -196,7 +213,7 @@
 
         Else
 
-
+            Console.WriteLine("No snapping this round!")
 
         End If
 
